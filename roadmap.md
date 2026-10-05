@@ -1,0 +1,12 @@
+# SpeakUp roadmap
+- [x] Auth (email + Google), profile, forgot password
+- [x] Dashboard, daily challenge, recommendations
+- [x] Random speaking: durations, prep, difficulty, category/custom prompts, recording, replay
+- [x] Transcription + detailed AI feedback + highlighted transcript
+- [x] Try again + attempt comparison
+- [x] Unique prompt engine with history + duplicate filtering
+- [x] AI debate & GD with configurable participants/personalities
+- [x] Friend rooms (link/code), stranger matchmaking, mixed rooms, report/block/leave/end
+- [x] Interview, storytelling, picture description
+- [x] Progress analytics, mistake tracking, XP/levels/badges, history
+- [ ] Live voice audio between humans in rooms (currently turn-based speech → transcript)

@@ -10,33 +10,232 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedDebateRouteImport } from './routes/_authenticated.debate'
+import { Route as AuthenticatedGdRouteImport } from './routes/_authenticated.gd'
+import { Route as AuthenticatedInterviewRouteImport } from './routes/_authenticated.interview'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
+import { Route as AuthenticatedProgressRouteImport } from './routes/_authenticated.progress'
+import { Route as ApiTranscribeRouteImport } from './routes/api/transcribe'
+import { Route as AuthenticatedHistoryIndexRouteImport } from './routes/_authenticated.history.index'
+import { Route as AuthenticatedHistoryIdRouteImport } from './routes/_authenticated.history.$id'
+import { Route as AuthenticatedPracticePictureRouteImport } from './routes/_authenticated.practice.picture'
+import { Route as AuthenticatedPracticeSpeakRouteImport } from './routes/_authenticated.practice.speak'
+import { Route as AuthenticatedPracticeStoryRouteImport } from './routes/_authenticated.practice.story'
+import { Route as AuthenticatedRoomsCodeRouteImport } from './routes/_authenticated.rooms.$code'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedDebateRoute = AuthenticatedDebateRouteImport.update({
+  id: '/debate',
+  path: '/debate',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedGdRoute = AuthenticatedGdRouteImport.update({
+  id: '/gd',
+  path: '/gd',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedInterviewRoute = AuthenticatedInterviewRouteImport.update({
+  id: '/interview',
+  path: '/interview',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedProgressRoute = AuthenticatedProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const ApiTranscribeRoute = ApiTranscribeRouteImport.update({
+  id: '/api/transcribe',
+  path: '/api/transcribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedHistoryIndexRoute =
+  AuthenticatedHistoryIndexRouteImport.update({
+    id: '/history/',
+    path: '/history/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedHistoryIdRoute = AuthenticatedHistoryIdRouteImport.update({
+  id: '/history/$id',
+  path: '/history/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedPracticePictureRoute =
+  AuthenticatedPracticePictureRouteImport.update({
+    id: '/practice/picture',
+    path: '/practice/picture',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedPracticeSpeakRoute =
+  AuthenticatedPracticeSpeakRouteImport.update({
+    id: '/practice/speak',
+    path: '/practice/speak',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedPracticeStoryRoute =
+  AuthenticatedPracticeStoryRouteImport.update({
+    id: '/practice/story',
+    path: '/practice/story',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedRoomsCodeRoute = AuthenticatedRoomsCodeRouteImport.update({
+  id: '/rooms/$code',
+  path: '/rooms/$code',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/debate': typeof AuthenticatedDebateRoute
+  '/gd': typeof AuthenticatedGdRoute
+  '/interview': typeof AuthenticatedInterviewRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/progress': typeof AuthenticatedProgressRoute
+  '/api/transcribe': typeof ApiTranscribeRoute
+  '/history/$id': typeof AuthenticatedHistoryIdRoute
+  '/practice/picture': typeof AuthenticatedPracticePictureRoute
+  '/practice/speak': typeof AuthenticatedPracticeSpeakRoute
+  '/practice/story': typeof AuthenticatedPracticeStoryRoute
+  '/rooms/$code': typeof AuthenticatedRoomsCodeRoute
+  '/history/': typeof AuthenticatedHistoryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/debate': typeof AuthenticatedDebateRoute
+  '/gd': typeof AuthenticatedGdRoute
+  '/interview': typeof AuthenticatedInterviewRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/progress': typeof AuthenticatedProgressRoute
+  '/api/transcribe': typeof ApiTranscribeRoute
+  '/history/$id': typeof AuthenticatedHistoryIdRoute
+  '/practice/picture': typeof AuthenticatedPracticePictureRoute
+  '/practice/speak': typeof AuthenticatedPracticeSpeakRoute
+  '/practice/story': typeof AuthenticatedPracticeStoryRoute
+  '/rooms/$code': typeof AuthenticatedRoomsCodeRoute
+  '/history': typeof AuthenticatedHistoryIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/debate': typeof AuthenticatedDebateRoute
+  '/_authenticated/gd': typeof AuthenticatedGdRoute
+  '/_authenticated/interview': typeof AuthenticatedInterviewRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/progress': typeof AuthenticatedProgressRoute
+  '/api/transcribe': typeof ApiTranscribeRoute
+  '/_authenticated/history/$id': typeof AuthenticatedHistoryIdRoute
+  '/_authenticated/practice/picture': typeof AuthenticatedPracticePictureRoute
+  '/_authenticated/practice/speak': typeof AuthenticatedPracticeSpeakRoute
+  '/_authenticated/practice/story': typeof AuthenticatedPracticeStoryRoute
+  '/_authenticated/rooms/$code': typeof AuthenticatedRoomsCodeRoute
+  '/_authenticated/history/': typeof AuthenticatedHistoryIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/dashboard'
+    | '/debate'
+    | '/gd'
+    | '/interview'
+    | '/profile'
+    | '/progress'
+    | '/api/transcribe'
+    | '/history/$id'
+    | '/practice/picture'
+    | '/practice/speak'
+    | '/practice/story'
+    | '/rooms/$code'
+    | '/history/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/dashboard'
+    | '/debate'
+    | '/gd'
+    | '/interview'
+    | '/profile'
+    | '/progress'
+    | '/api/transcribe'
+    | '/history/$id'
+    | '/practice/picture'
+    | '/practice/speak'
+    | '/practice/story'
+    | '/rooms/$code'
+    | '/history'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/debate'
+    | '/_authenticated/gd'
+    | '/_authenticated/interview'
+    | '/_authenticated/profile'
+    | '/_authenticated/progress'
+    | '/api/transcribe'
+    | '/_authenticated/history/$id'
+    | '/_authenticated/practice/picture'
+    | '/_authenticated/practice/speak'
+    | '/_authenticated/practice/story'
+    | '/_authenticated/rooms/$code'
+    | '/_authenticated/history/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiTranscribeRoute: typeof ApiTranscribeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +247,161 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/debate': {
+      id: '/_authenticated/debate'
+      path: '/debate'
+      fullPath: '/debate'
+      preLoaderRoute: typeof AuthenticatedDebateRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/gd': {
+      id: '/_authenticated/gd'
+      path: '/gd'
+      fullPath: '/gd'
+      preLoaderRoute: typeof AuthenticatedGdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/interview': {
+      id: '/_authenticated/interview'
+      path: '/interview'
+      fullPath: '/interview'
+      preLoaderRoute: typeof AuthenticatedInterviewRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/progress': {
+      id: '/_authenticated/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof AuthenticatedProgressRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/api/transcribe': {
+      id: '/api/transcribe'
+      path: '/api/transcribe'
+      fullPath: '/api/transcribe'
+      preLoaderRoute: typeof ApiTranscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/history/': {
+      id: '/_authenticated/history/'
+      path: '/history'
+      fullPath: '/history/'
+      preLoaderRoute: typeof AuthenticatedHistoryIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/history/$id': {
+      id: '/_authenticated/history/$id'
+      path: '/history/$id'
+      fullPath: '/history/$id'
+      preLoaderRoute: typeof AuthenticatedHistoryIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/practice/picture': {
+      id: '/_authenticated/practice/picture'
+      path: '/practice/picture'
+      fullPath: '/practice/picture'
+      preLoaderRoute: typeof AuthenticatedPracticePictureRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/practice/speak': {
+      id: '/_authenticated/practice/speak'
+      path: '/practice/speak'
+      fullPath: '/practice/speak'
+      preLoaderRoute: typeof AuthenticatedPracticeSpeakRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/practice/story': {
+      id: '/_authenticated/practice/story'
+      path: '/practice/story'
+      fullPath: '/practice/story'
+      preLoaderRoute: typeof AuthenticatedPracticeStoryRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/rooms/$code': {
+      id: '/_authenticated/rooms/$code'
+      path: '/rooms/$code'
+      fullPath: '/rooms/$code'
+      preLoaderRoute: typeof AuthenticatedRoomsCodeRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDebateRoute: typeof AuthenticatedDebateRoute
+  AuthenticatedGdRoute: typeof AuthenticatedGdRoute
+  AuthenticatedInterviewRoute: typeof AuthenticatedInterviewRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedProgressRoute: typeof AuthenticatedProgressRoute
+  AuthenticatedHistoryIdRoute: typeof AuthenticatedHistoryIdRoute
+  AuthenticatedPracticePictureRoute: typeof AuthenticatedPracticePictureRoute
+  AuthenticatedPracticeSpeakRoute: typeof AuthenticatedPracticeSpeakRoute
+  AuthenticatedPracticeStoryRoute: typeof AuthenticatedPracticeStoryRoute
+  AuthenticatedRoomsCodeRoute: typeof AuthenticatedRoomsCodeRoute
+  AuthenticatedHistoryIndexRoute: typeof AuthenticatedHistoryIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDebateRoute: AuthenticatedDebateRoute,
+  AuthenticatedGdRoute: AuthenticatedGdRoute,
+  AuthenticatedInterviewRoute: AuthenticatedInterviewRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedProgressRoute: AuthenticatedProgressRoute,
+  AuthenticatedHistoryIdRoute: AuthenticatedHistoryIdRoute,
+  AuthenticatedPracticePictureRoute: AuthenticatedPracticePictureRoute,
+  AuthenticatedPracticeSpeakRoute: AuthenticatedPracticeSpeakRoute,
+  AuthenticatedPracticeStoryRoute: AuthenticatedPracticeStoryRoute,
+  AuthenticatedRoomsCodeRoute: AuthenticatedRoomsCodeRoute,
+  AuthenticatedHistoryIndexRoute: AuthenticatedHistoryIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  ApiTranscribeRoute: ApiTranscribeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
