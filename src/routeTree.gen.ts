@@ -20,6 +20,7 @@ import { Route as ApiTranscribeRouteImport } from './routes/api/transcribe'
 import { Route as AuthenticatedPracticePictureRouteImport } from './routes/_authenticated.practice.picture'
 import { Route as AuthenticatedPracticeSpeakRouteImport } from './routes/_authenticated.practice.speak'
 import { Route as AuthenticatedPracticeStoryRouteImport } from './routes/_authenticated.practice.story'
+import { Route as AuthenticatedRoomsCodeRouteImport } from './routes/_authenticated.rooms.$code'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -78,6 +79,11 @@ const AuthenticatedPracticeStoryRoute =
     path: '/practice/story',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedRoomsCodeRoute = AuthenticatedRoomsCodeRouteImport.update({
+  id: '/rooms/$code',
+  path: '/rooms/$code',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/practice/picture': typeof AuthenticatedPracticePictureRoute
   '/practice/speak': typeof AuthenticatedPracticeSpeakRoute
   '/practice/story': typeof AuthenticatedPracticeStoryRoute
+  '/rooms/$code': typeof AuthenticatedRoomsCodeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/practice/picture': typeof AuthenticatedPracticePictureRoute
   '/practice/speak': typeof AuthenticatedPracticeSpeakRoute
   '/practice/story': typeof AuthenticatedPracticeStoryRoute
+  '/rooms/$code': typeof AuthenticatedRoomsCodeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/_authenticated/practice/picture': typeof AuthenticatedPracticePictureRoute
   '/_authenticated/practice/speak': typeof AuthenticatedPracticeSpeakRoute
   '/_authenticated/practice/story': typeof AuthenticatedPracticeStoryRoute
+  '/_authenticated/rooms/$code': typeof AuthenticatedRoomsCodeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/practice/picture'
     | '/practice/speak'
     | '/practice/story'
+    | '/rooms/$code'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/practice/picture'
     | '/practice/speak'
     | '/practice/story'
+    | '/rooms/$code'
   id:
     | '__root__'
     | '/'
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/_authenticated/practice/picture'
     | '/_authenticated/practice/speak'
     | '/_authenticated/practice/story'
+    | '/_authenticated/rooms/$code'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -244,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPracticeStoryRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/rooms/$code': {
+      id: '/_authenticated/rooms/$code'
+      path: '/rooms/$code'
+      fullPath: '/rooms/$code'
+      preLoaderRoute: typeof AuthenticatedRoomsCodeRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
@@ -254,6 +273,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedPracticePictureRoute: typeof AuthenticatedPracticePictureRoute
   AuthenticatedPracticeSpeakRoute: typeof AuthenticatedPracticeSpeakRoute
   AuthenticatedPracticeStoryRoute: typeof AuthenticatedPracticeStoryRoute
+  AuthenticatedRoomsCodeRoute: typeof AuthenticatedRoomsCodeRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -263,6 +283,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedPracticePictureRoute: AuthenticatedPracticePictureRoute,
   AuthenticatedPracticeSpeakRoute: AuthenticatedPracticeSpeakRoute,
   AuthenticatedPracticeStoryRoute: AuthenticatedPracticeStoryRoute,
+  AuthenticatedRoomsCodeRoute: AuthenticatedRoomsCodeRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
