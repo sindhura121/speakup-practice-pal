@@ -8,7 +8,7 @@ export function Logo({ className }: { className?: string }) {
           <path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2" />
         </svg>
       </span>
-      Speak<span className="text-primary">Up</span>
+      <span>Speak<span className="text-primary">Up</span></span>
     </span>
   );
 }

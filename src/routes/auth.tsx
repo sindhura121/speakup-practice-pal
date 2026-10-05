@@ -86,7 +86,7 @@ function AuthPage() {
           <p className="font-display text-4xl font-bold leading-tight">"I went from freezing up in GDs to leading them in three weeks."</p>
           <p className="mt-4 text-ink-foreground/70">Practice a little every day. SpeakUp tracks every pause, filler and win.</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex items-end gap-2">
           {[38, 62, 48, 80, 56, 72, 44].map((h, i) => (
             <span key={i} className="w-3 rounded-full bg-primary" style={{ height: h }} />
           ))}
