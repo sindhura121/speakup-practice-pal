@@ -82,6 +82,7 @@ export function ConversationArena(props: {
   const [elapsed, setElapsed] = useState(0);
   const msgsRef = useRef<ConvMessage[]>([]);
   const started = useRef(false);
+  const alive = useRef(true);
   const labelOf = (p?: string) => props.ai.find((a) => a.personality === p)?.label;
 
   const push = (m: ConvMessage[]) => {
@@ -96,8 +97,10 @@ export function ConversationArena(props: {
       data: { kind: props.kind, topic: props.topic, userName: props.userName, userSide: props.userSide, interviewType: props.interviewType, responders, history: msgsRef.current, phase },
     });
     setThinking(false);
+    if (!alive.current) return;
     if (!r.ok) return toast.error(r.error);
     for (const m of r.data.messages) {
+      if (!alive.current) return;
       push([m]);
       if (voice) await new Promise<void>((res) => speak(m.content, m.personality, res));
     }
@@ -107,7 +110,10 @@ export function ConversationArena(props: {
     if (started.current) return;
     started.current = true;
     void aiTurn("open");
-    return () => stopSpeaking();
+    return () => {
+      alive.current = false;
+      stopSpeaking();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -207,7 +213,11 @@ export function ConversationArena(props: {
       <div className="space-y-3 border-t pt-4">
         <TurnRecorder maxSec={props.turnSec} disabled={thinking || ending} onTurn={onTurn} label={props.kind === "interview" ? "Answer the question" : "Make your point"} />
         <div className="flex justify-between">
-          <Button variant="ghost" size="sm" onClick={props.onExit} disabled={ending}>
+          <Button variant="ghost" size="sm" onClick={() => {
+            alive.current = false;
+            stopSpeaking();
+            props.onExit();
+          }} disabled={ending}>
             Leave
           </Button>
           <Button size="sm" variant="outline" onClick={() => void end()} disabled={ending}>

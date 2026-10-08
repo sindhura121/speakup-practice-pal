@@ -206,9 +206,11 @@ function speakFallback(text: string, personality: string, onEnd?: () => void) {
 
 let audioCtx: AudioContext | null = null;
 let currentSource: AudioBufferSourceNode | null = null;
+let speakGen = 0;
 
 /** Stops any AI voice currently playing. */
 export function stopSpeaking() {
+  speakGen++;
   try {
     currentSource?.stop();
   } catch {
@@ -225,6 +227,7 @@ export function stopSpeaking() {
 export async function speak(text: string, personality = "", onEnd?: () => void) {
   if (typeof window === "undefined") return onEnd?.();
   stopSpeaking();
+  const gen = speakGen;
   try {
     const {
       data: { session },
@@ -279,6 +282,7 @@ export async function speak(text: string, personality = "", onEnd?: () => void) 
       pcm.set(c, off);
       off += c.length;
     }
+    if (gen !== speakGen) return onEnd?.();
     const samples = new Int16Array(pcm.buffer, 0, pcm.length / 2);
     audioCtx ??= new AudioContext({ sampleRate: 24000 });
     if (audioCtx.state === "suspended") await audioCtx.resume();
@@ -295,6 +299,7 @@ export async function speak(text: string, personality = "", onEnd?: () => void) 
     };
     src.start();
   } catch {
+    if (gen !== speakGen) return onEnd?.();
     speakFallback(text, personality, onEnd);
   }
 }
