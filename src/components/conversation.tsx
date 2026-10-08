@@ -16,7 +16,9 @@ export type AiParticipant = { name: string; personality: string; label: string; 
 
 export function MessageList({ messages, userName, personalityLabel }: { messages: (ConvMessage & { pending?: boolean })[]; userName: string; personalityLabel?: (p?: string) => string | undefined }) {
   const end = useRef<HTMLDivElement>(null);
-  useEffect(() => end.current?.scrollIntoView({ behavior: "smooth", block: "end" }), [messages.length]);
+  useEffect(() => {
+    end.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages.length]);
   return (
     <div className="space-y-5">
       {messages.map((m, i) => {
