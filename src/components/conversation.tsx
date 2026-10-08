@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { conversationTurn, evaluateConversation } from "@/lib/ai/ai.functions";
 import type { ConvMessage } from "@/lib/ai/types";
 import { supabase } from "@/integrations/supabase/client";
-import { speak } from "@/lib/audio";
+import { speak, stopSpeaking } from "@/lib/audio";
 import { Avatar, fmtTime } from "@/components/brand";
 import { TurnRecorder } from "@/components/turn-recorder";
 import { Button } from "@/components/ui/button";
@@ -107,7 +107,7 @@ export function ConversationArena(props: {
     if (started.current) return;
     started.current = true;
     void aiTurn("open");
-    return () => window.speechSynthesis?.cancel();
+    return () => stopSpeaking();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -124,7 +124,7 @@ export function ConversationArena(props: {
   }, [elapsed]);
 
   const onTurn = async (text: string, sec: number) => {
-    window.speechSynthesis?.cancel();
+    stopSpeaking();
     setUserSec((s) => s + sec);
     push([{ speaker: props.userName, content: text, isUser: true }]);
     await aiTurn("reply");
@@ -138,7 +138,7 @@ export function ConversationArena(props: {
       return;
     }
     setEnding(true);
-    window.speechSynthesis?.cancel();
+    stopSpeaking();
     if (props.kind === "gd") await aiTurn("close");
     const words = (s: string) => s.split(/\s+/).filter(Boolean).length;
     const total = msgsRef.current.reduce((a, m) => a + words(m.content), 0);
