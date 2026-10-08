@@ -20,6 +20,7 @@ import { Route as AuthenticatedInterviewRouteImport } from './routes/_authentica
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedProgressRouteImport } from './routes/_authenticated.progress'
 import { Route as ApiTranscribeRouteImport } from './routes/api/transcribe'
+import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as AuthenticatedHistoryIndexRouteImport } from './routes/_authenticated.history.index'
 import { Route as AuthenticatedHistoryIdRouteImport } from './routes/_authenticated.history.$id'
 import { Route as AuthenticatedPracticePictureRouteImport } from './routes/_authenticated.practice.picture'
@@ -81,6 +82,11 @@ const ApiTranscribeRoute = ApiTranscribeRouteImport.update({
   path: '/api/transcribe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTtsRoute = ApiTtsRouteImport.update({
+  id: '/api/tts',
+  path: '/api/tts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedHistoryIndexRoute =
   AuthenticatedHistoryIndexRouteImport.update({
     id: '/history/',
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/progress': typeof AuthenticatedProgressRoute
   '/api/transcribe': typeof ApiTranscribeRoute
+  '/api/tts': typeof ApiTtsRoute
   '/history/$id': typeof AuthenticatedHistoryIdRoute
   '/practice/picture': typeof AuthenticatedPracticePictureRoute
   '/practice/speak': typeof AuthenticatedPracticeSpeakRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/progress': typeof AuthenticatedProgressRoute
   '/api/transcribe': typeof ApiTranscribeRoute
+  '/api/tts': typeof ApiTtsRoute
   '/history/$id': typeof AuthenticatedHistoryIdRoute
   '/practice/picture': typeof AuthenticatedPracticePictureRoute
   '/practice/speak': typeof AuthenticatedPracticeSpeakRoute
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/progress': typeof AuthenticatedProgressRoute
   '/api/transcribe': typeof ApiTranscribeRoute
+  '/api/tts': typeof ApiTtsRoute
   '/_authenticated/history/$id': typeof AuthenticatedHistoryIdRoute
   '/_authenticated/practice/picture': typeof AuthenticatedPracticePictureRoute
   '/_authenticated/practice/speak': typeof AuthenticatedPracticeSpeakRoute
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/api/transcribe'
+    | '/api/tts'
     | '/history/$id'
     | '/practice/picture'
     | '/practice/speak'
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/api/transcribe'
+    | '/api/tts'
     | '/history/$id'
     | '/practice/picture'
     | '/practice/speak'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/progress'
     | '/api/transcribe'
+    | '/api/tts'
     | '/_authenticated/history/$id'
     | '/_authenticated/practice/picture'
     | '/_authenticated/practice/speak'
@@ -236,6 +248,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ApiTranscribeRoute: typeof ApiTranscribeRoute
+  ApiTtsRoute: typeof ApiTtsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -315,6 +328,13 @@ declare module '@tanstack/react-router' {
       path: '/api/transcribe'
       fullPath: '/api/transcribe'
       preLoaderRoute: typeof ApiTranscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/tts': {
+      id: '/api/tts'
+      path: '/api/tts'
+      fullPath: '/api/tts'
+      preLoaderRoute: typeof ApiTtsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/history/': {
@@ -402,6 +422,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ApiTranscribeRoute: ApiTranscribeRoute,
+  ApiTtsRoute: ApiTtsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

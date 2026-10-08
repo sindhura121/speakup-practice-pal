@@ -191,8 +191,8 @@ export async function recordingUrl(path: string) {
   return data?.signedUrl ?? null;
 }
 
-/** Speaks AI lines aloud with per-personality voice variation. */
-export function speak(text: string, personality = "", onEnd?: () => void) {
+/** Fallback: browser speech with per-personality variation. */
+function speakFallback(text: string, personality: string, onEnd?: () => void) {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return onEnd?.();
   const u = new SpeechSynthesisUtterance(text);
   const voices = window.speechSynthesis.getVoices().filter((v) => v.lang.startsWith("en"));
@@ -202,4 +202,99 @@ export function speak(text: string, personality = "", onEnd?: () => void) {
   u.pitch = 0.85 + (hash % 5) * 0.08;
   u.onend = () => onEnd?.();
   window.speechSynthesis.speak(u);
+}
+
+let audioCtx: AudioContext | null = null;
+let currentSource: AudioBufferSourceNode | null = null;
+
+/** Stops any AI voice currently playing. */
+export function stopSpeaking() {
+  try {
+    currentSource?.stop();
+  } catch {
+    /* already stopped */
+  }
+  currentSource = null;
+  window.speechSynthesis?.cancel();
+}
+
+/**
+ * Speaks AI lines aloud with a clear, natural AI voice (24 kHz PCM over SSE).
+ * Falls back to the browser voice when the AI voice is unavailable.
+ */
+export async function speak(text: string, personality = "", onEnd?: () => void) {
+  if (typeof window === "undefined") return onEnd?.();
+  stopSpeaking();
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) throw new Error("no session");
+    const res = await fetch("/api/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+      body: JSON.stringify({ text, personality }),
+    });
+    if (!res.ok || !res.body) throw new Error("tts failed");
+
+    // Collect base64 PCM deltas from the SSE stream.
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let buf = "";
+    const chunks: Uint8Array[] = [];
+    let failed = false;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      const events = buf.split("\n\n");
+      buf = events.pop() ?? "";
+      for (const ev of events) {
+        const line = ev.split("\n").find((l) => l.startsWith("data:"));
+        if (!line) continue;
+        const payload = line.slice(5).trim();
+        if (!payload || payload === "[DONE]") continue;
+        try {
+          const d = JSON.parse(payload);
+          if (d.type === "speech.audio.delta" && d.audio) {
+            const bin = atob(d.audio);
+            const bytes = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+            chunks.push(bytes);
+          } else if (d.type === "error" || d.type === "speech.error") {
+            failed = true;
+          }
+        } catch {
+          /* partial event */
+        }
+      }
+    }
+    if (failed || !chunks.length) throw new Error("no audio");
+
+    // Merge into one 16-bit LE mono PCM buffer at 24 kHz.
+    const total = chunks.reduce((a, c) => a + c.length, 0);
+    const pcm = new Uint8Array(total - (total % 2));
+    let off = 0;
+    for (const c of chunks) {
+      pcm.set(c, off);
+      off += c.length;
+    }
+    const samples = new Int16Array(pcm.buffer, 0, pcm.length / 2);
+    audioCtx ??= new AudioContext({ sampleRate: 24000 });
+    if (audioCtx.state === "suspended") await audioCtx.resume();
+    const buffer = audioCtx.createBuffer(1, samples.length, 24000);
+    const channel = buffer.getChannelData(0);
+    for (let i = 0; i < samples.length; i++) channel[i] = samples[i] / 32768;
+    const src = audioCtx.createBufferSource();
+    src.buffer = buffer;
+    src.connect(audioCtx.destination);
+    currentSource = src;
+    src.onended = () => {
+      if (currentSource === src) currentSource = null;
+      onEnd?.();
+    };
+    src.start();
+  } catch {
+    speakFallback(text, personality, onEnd);
+  }
 }
