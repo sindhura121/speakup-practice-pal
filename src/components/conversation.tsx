@@ -107,6 +107,7 @@ export function ConversationArena(props: {
   };
 
   useEffect(() => {
+    alive.current = true;
     if (started.current) return;
     started.current = true;
     void aiTurn("open");
