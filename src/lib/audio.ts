@@ -177,7 +177,7 @@ export async function transcribe(file: File, onDelta?: (text: string) => void): 
 export function buildMetrics(rec: Pick<Recording, "durationSec" | "speakingSec" | "longPauses" | "longestPauseSec">, transcript: string): AudioMetrics {
   const wordCount = (transcript.match(/[A-Za-z']+/g) ?? []).length;
   const mins = Math.max(rec.speakingSec || rec.durationSec, 1) / 60;
-  return { ...rec, wordCount, wpm: Math.round(wordCount / mins) };
+  return { durationSec: rec.durationSec, speakingSec: rec.speakingSec, longPauses: rec.longPauses, longestPauseSec: rec.longestPauseSec, wordCount, wpm: Math.round(wordCount / mins) };
 }
 
 export async function uploadRecording(userId: string, file: File) {
