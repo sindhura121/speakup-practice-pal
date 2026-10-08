@@ -122,6 +122,45 @@ export async function aiJson<T>(opts: {
   }
 }
 
+export const TTS_MODEL = "google/gemini-3.1-flash-tts-preview";
+
+/** Clear, natural Gemini voices mapped per personality. */
+const TTS_VOICES: Record<string, string> = {
+  aggressive: "Charon",
+  logical: "Iapetus",
+  calm: "Kore",
+  analytical: "Algieba",
+  devils_advocate: "Rasalgethi",
+  beginner: "Leda",
+  expert: "Orus",
+  moderator: "Aoede",
+  quiet: "Callirrhoe",
+  fact_based: "Iapetus",
+  balanced: "Kore",
+  creative: "Puck",
+  skeptic: "Charon",
+  practical: "Algieba",
+  interviewer: "Aoede",
+};
+
+/** Streams text-to-speech (SSE of base64 PCM) from the gateway. */
+export function speakText(text: string, personality = ""): Promise<Response> {
+  const voice = TTS_VOICES[personality] ?? "Kore";
+  return fetch(`${BASE}/audio/speech`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${key()}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: TTS_MODEL,
+      contents: [{ role: "user", parts: [{ text }] }],
+      generationConfig: {
+        responseModalities: ["AUDIO"],
+        speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } },
+      },
+      stream_format: "sse",
+    }),
+  });
+}
+
 export async function transcribeAudio(file: File): Promise<Response> {
   const form = new FormData();
   form.append("model", TRANSCRIBE_MODEL);
